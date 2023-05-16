@@ -21,7 +21,7 @@ function buildInFormat(format, platform) {
       bundle: true,
       outfile: `dist/index.${format}.${platform}.min.js`,
       platform,
-      minify: true,
+      minify: false,
       format,
       watch: {
         onRebuild(error, result) {
@@ -36,4 +36,3 @@ function buildInFormat(format, platform) {
 
 // build('node')
 build('browser')
-
