@@ -14,12 +14,12 @@
   "author": "cailiao(Eleg-i)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Eleg-i/enum.git"
+    "url": "git+https://github.com/Eleg-i/watch-dom.git"
   },
   "bugs": {
-    "url": "https://github.com/Eleg-i/enum/issues"
+    "url": "https://github.com/Eleg-i/watch-dom/issues"
   },
-  "homepage": "https://github.com/Eleg-i/enum/#readme",
+  "homepage": "https://github.com/Eleg-i/watch-dom/#readme",
   "license": "ISC",
   "scripts": {
     "build-watch": "node ./script/esbuild.watch.js",
