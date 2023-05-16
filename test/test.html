@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h3>监听树变化</h3>
+  <button id="watchStart">开启</button><button id="watchStop">停止</button>
+  <div id="target1"><p>白</p></div>
+  <p id="print1"></p>
+  <br>
+  <h3>监听盒模型变化</h3>
+  <button id="watchBoxStart">开启</button><button id="watchBoxPause">暂停</button><button id="watchBoxResume">恢复</button><button id="watchBoxStop">停止</button>
+  <br>
+  <div id="target2" style="display: inline-block;margin-top: 20px;"><span>白</span></div>
+  <p id="print2"></p>
+  <script type="module">
+    import patch from '../dist/index.esm.browser.min.js'
+    patch()
+    /**
+     * test
+     */
+    function test() {
+      var watch = true,
+          watchBox = true
+      const pool = ['黑', '白', '天蓝', '罗兰紫'],
+            watchStart = document.querySelector('#watchStart'),
+            watchStop = document.querySelector('#watchStop'),
+            target1 = document.querySelector('#target1'),
+            print1 = document.querySelector('#print1'),
+            watchBoxStart = document.querySelector('#watchBoxStart'),
+            watchBoxPause = document.querySelector('#watchBoxPause'),
+            watchBoxResume = document.querySelector('#watchBoxResume'),
+            watchBoxStop = document.querySelector('#watchBoxStop'),
+            target2 = document.querySelector('#target2'),
+            print2 = document.querySelector('#print2')
+    
+      /**
+       * setHtml1
+       * @param {Element} target
+       */
+      function setHtml1(target) {
+        const unwatch = target.$watch((record)=>{
+          console.log(record)
+        }, { subtree: true, childList: true }),
+              timer = setInterval(() => {
+                const index = Math.floor(Math.random() * 4)
+
+                target.querySelector('p').innerHTML = pool[index]
+                if (!watch) clearInterval(timer),unwatch()
+              }, 1000)
+      }
+
+      /**
+       * setHtml2
+       * @param {Element} target
+       */
+      function setHtml2(target) {
+        const unwatch = target.$watchBox((record, observer)=>{
+          console.log(record, observer)
+        }),
+              timer = setInterval(() => {
+                const index = Math.floor(Math.random() * 4)
+
+                target.querySelector('span').innerHTML = pool[index]
+                if (!watchBox) {
+                  clearInterval(timer)
+                  unwatch()
+
+                  watchBoxPause.removeEventListener('click', unwatch.pause)
+                  watchBoxResume.removeEventListener('click', unwatch.resume)
+                }
+              }, 1000)
+
+        watchBoxPause.addEventListener('click', unwatch.pause)
+
+        watchBoxResume.addEventListener('click', unwatch.resume)
+      }
+
+      watchStart.addEventListener('click', () => {
+        watch = true
+    
+        setHtml1(target1)
+      })
+      watchStop.addEventListener('click', () => {
+        watch = false
+      })
+
+      watchBoxStart.addEventListener('click', () => {
+        watchBox = true
+    
+        setHtml2(target2)
+      })
+      watchBoxStop.addEventListener('click', () => {
+        watchBox = false
+      })
+    }
+
+    test()
+    console.log('ready')
+  </script>
+</body>
+</html>

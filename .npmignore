@@ -1,7 +1,13 @@
+.git
+.gitignore
+.husky
 script
 node_modules
+test
 debug
-src
-.git
+.eslintignore
+.eslintrc.js
 .npmignore
-.gitignore
+.prettierignore
+.prettierrc.js
+index.js
