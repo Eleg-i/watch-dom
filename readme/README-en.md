@@ -37,7 +37,7 @@ unwatch()
 // Pause monitoring
 unwatch.pause()
 // Resume monitoring
-unwatch.pause()
+unwatch.resume()
 ```
 
 
@@ -48,13 +48,13 @@ The patch() method inserts two methods, `$watch` and `$watchBox`, into the proto
 
 #### `$watch` `Function`
 
-Parameters:
+##### Parameters:
 
-- `callback`: Required. Function type. Pass in one parameter,
+- `callback`: Required. `Function` type. Pass in one parameter,
 
 - record is an array of [MutationRecord](https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord). It contains information about the modification of the DOM.
 
-- `options`: Required. Object type. It is the options parameter of [MutationObserver.observe()](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/observe),
+- `options`: Required. `Object` type. It is the options parameter of [MutationObserver.observe()](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/observe),
 
   Options are as follows:
 
@@ -86,17 +86,21 @@ Parameters:
 
     Set to `true` to record the previous value of a node's text whenever the text changes on nodes being monitored. The default value is `false`.
 
-#### `$watchBox` Function
+##### returns: `Function` Returns a function to cancel the monitor.
 
-Parameters:
 
-- `callback`: Required. Function type. Pass in two parameters,
+
+#### `$watchBox` `Function`
+
+##### Parameters:
+
+- `callback`: Required. `Function` type. Pass in two parameters,
 
   - record is an array of [ResizeObserverEntry](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserverEntry). It contains information about the modified size of elements.
 
   - observer: A reference to ResizeObserver itself.
 
-- `options`: Optional. Object type. It is the options parameter of [ResizeObserver.observe()](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver/observe),The properties of options are as follows:
+- `options`: Optional. `Object` type. It is the options parameter of [ResizeObserver.observe()](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver/observe),The properties of options are as follows:
 
   - `box`  Sets which box model the observer will observe changes to. Possible values are:
 
@@ -111,3 +115,11 @@ Parameters:
     - `device-pixel-content-box`
 
       The size of the content area as defined in CSS, in device pixels, before applying any CSS transforms on the element or its ancestors.
+
+##### returns: `Function` 
+
+Returns a function to cancel the monitor.
+
+- pause：`Function` type, causes the current monitor to pause monitoring.
+
+- resume：`Function` type, resumes monitoring to the current monitor. Should be called only after `pause()` has been called.

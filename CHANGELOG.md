@@ -2,9 +2,20 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 # Changelog
 
+- [v0.1.2](#v012)
+- [v0.1.1](#v011)
 - [v0.1.0](#v010)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+### v0.1.2
+
+完善 Readme 文档
+
+### v0.1.1
+
+完善 package.json
+
 ### v0.1.0
 
 - 创建
