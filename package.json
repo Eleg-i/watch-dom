@@ -1,6 +1,6 @@
 {
   "name": "@cailiao/watch-dom",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "监听dom树节点的变化，并允许作出处理。(Listens for changes to dom tree nodes and allows processing.)",
   "type": "module",
   "module": "dist/index.esm.browser.min.js",
