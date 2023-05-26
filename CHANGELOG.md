@@ -2,11 +2,16 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 # Changelog
 
+- [v0.1.3](#v013)
 - [v0.1.2](#v012)
 - [v0.1.1](#v011)
 - [v0.1.0](#v010)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+### v0.1.3
+
+修改 Readme 文档，新增两个API，允许直接导入 watch 和 watchBox 方法，新增 types。
 
 ### v0.1.2
 
