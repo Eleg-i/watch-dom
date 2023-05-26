@@ -10,7 +10,8 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:vue/recommended'
+    // 'plugin:vue/recommended',
+    'plugin:@typescript-eslint/recommended'
     // "plugin:import/recommended",
     // "plugin:node/recommended",
     // 'plugin:promise/recommended'
@@ -34,62 +35,26 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['src/utils/**/*.js', 'library/api/*.js', 'library/js/*.js'],
+      files: ['*.ts', '*.tsx'],
       rules: {
-        'require-jsdoc': [
-          2, // 强制要求书写注释
-          {
-            require: {
-              FunctionDeclaration: true, // 函数声明
-              MethodDefinition: true, // 类（内部）方法定义
-              ClassDeclaration: true, // 类声明
-              ArrowFunctionExpression: true, // 箭头函数表达式
-              FunctionExpression: true // 函数表达式
-            }
-          }
-        ],
-        'valid-jsdoc': [
-          2, // jsdoc 规则校验
-          {
-            prefer: {
-              arg: 'param',
-              argument: 'param',
-              constructor: 'class',
-              returns: 'return',
-              virtual: 'abstract',
-              method: 'func',
-              function: 'func'
-            },
-            preferType: {
-              boolean: 'Boolean',
-              number: 'Number',
-              object: 'Object',
-              string: 'String',
-              array: 'Array',
-              promise: 'Promise'
-            },
-            requireReturn: false,
-            requireReturnType: false,
-            matchDescription: '.+',
-            requireParamDescription: true,
-            requireReturnDescription: false
-          }
-        ]
+        // The core 'no-unused-vars' rules (in the eslint:recommeded ruleset)
+        // does not work with type definitions
+        'no-unused-vars': 'off'
       }
     }
   ],
-  parser: 'vue-eslint-parser',
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: { impliedStrict: true },
-    vueFeatures: {
-      interpolationAsNonHTML: true,
-      styleCSSVariableInjection: true
-    },
+    // vueFeatures: {
+    //   interpolationAsNonHTML: true,
+    //   styleCSSVariableInjection: true
+    // },
     ecmaVersion: 2022,
-    parser: '@babel/eslint-parser',
+    // parser: '@babel/eslint-parser',
     sourceType: 'module'
   },
-  plugins: ['vue', 'jsx', '@cailiao/prettier'],
+  plugins: ['html', 'vue', 'jsx', '@cailiao/prettier', '@typescript-eslint'],
   root: true,
   // 默认可用的全局变量
   rules: {

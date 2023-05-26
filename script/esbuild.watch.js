@@ -1,4 +1,8 @@
 import esbuild from 'esbuild'
+import { readFile } from 'node:fs/promises'
+
+const packageJson = JSON.parse(await readFile('./package.json', 'utf-8')),
+      { entry, outfile } = packageJson
 
 /**
  * 开始构建
@@ -17,12 +21,13 @@ function build(platform) {
 function buildInFormat(format, platform) {
   esbuild
     .build({
-      entryPoints: ['index.js'],
       bundle: true,
-      outfile: `dist/index.${format}.${platform}.min.js`,
-      platform,
-      minify: false,
+      entryPoints: entry,
       format,
+      minify: false,
+      outfile: `dist/${outfile}.${format}.${platform}.min.js`,
+      platform,
+      target: 'es2022',
       watch: {
         onRebuild(error, result) {
           if (error) console.error('watch build failed:', error)

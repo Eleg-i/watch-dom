@@ -1,122 +1,130 @@
-# watch-dom —— 监听 DOM 变化
+# watch-dom —— Monitor DOM changes
 
-简体中文 | [English](readme/README-en.md)
+[简体中文](readme/README-zh-cn.md) | English
 
-## 描述
+## Description
 
-监听指定DOM树上节点的更改，或者元素盒模型大小的更改，并允许对更改作出处理。
+Monitor changes to nodes on a specified DOM tree or changes to the size of element box models and allow processing of changes.
 
-## 开始使用
+## Getting Started
 
-安装依赖包
+Install dependencies
 
 ```bash
 npm i @cailiao/watch-dom
 ```
 
-导入 patch 函数
+Import the patch function
 
 ```javascript
-import patch from '../dist/index.esm.browser.min.js'
-patch() // 选择在合适的时机执行
+import patch from '@cailiao/watch-dom'
+
+// Choosing to execute the patch function at the right time will create two prototype methods $watch and $watchBox on the global class Element.
+patch()
+
+// Or import only the specified methods as needed, watch is equivalent to the $watch method on the prototype, and watchBox is equivalent to the $watchBox method on the prototype.
+import { watch, watchBox } from '@cailiao/watch-dom'
 ```
 
-使用
+## Usage
 
 ```javascript
-// 监视DOM数上子节点的变化，targetElement 是任意的内置 Element 类的实例，即 DOM 元素
+// Monitor changes to child nodes on the DOM tree. targetElement is an instance of any built-in Element class, i.e., a DOM element.
 const unwatch = targetElement.$watch(record => { console.log(record) }, { subtree: true, childList: true })
-// 取消监视
+// Cancel monitoring
 unwatch()
 
 
-// 监视元素盒模型大小变化，targetElement 是任意的内置 Element 类的实例，即 DOM 元素
+// Monitor changes to the size of element box models. targetElement is an instance of any built-in Element class, i.e., a DOM element.
 const unwatch = targetElement.$watchBox(record => { console.log(record) }, { subtree: true, childList: true })
-// 取消监视
+// Cancel monitoring
 unwatch()
-// 暂停监视
+// Pause monitoring
 unwatch.pause()
-// 恢复监视
+// Resume monitoring
 unwatch.resume()
 ```
 
-## 说明
 
-patch() 方法会在 Element 的原型上插入两个方法，`$watch` 和 `$watchBox`，`$watch` 和 `$watchBox` 均接受两个参数 `callback` 和 `options`.
+
+## Explanation
+
+The `patch()` method inserts two methods, `$watch` and `$watchBox`, on the prototype of Element. The directly imported `watch` is equivalent to the `$watch` method on the prototype, and `watchBox` is equivalent to the `$watchBox` method on the prototype.
 
 #### `$watch` `Function`
 
-##### 参数
+##### Parameters:
 
-- `callback` ：`Function` 类型，必需，传递一个参数，
+- `callback`: Required. `Function` type. Pass in one parameter,
 
-  - record 是一个 [MutationRecord](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationRecord) 数组。其中包含了DOM被修改的信息。
+- record is an array of [MutationRecord](https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord). It contains information about the modification of the DOM.
 
-- `options`： `Object` 类型，必需，是 [MutationObserver.observe()](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver/observe) 的 options 参数，
+- `options`: Required. `Object` type. It is the options parameter of [MutationObserver.observe()](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/observe),
 
-    `options` 的属性如下：
+  Options are as follows:
 
-  - `subtree` 可选
+  - `subtree` Optional
 
-      当为 `true` 时，将会监听以 `target` 为根节点的整个子树。包括子树中所有节点的属性，而不仅仅是针对 `target`。默认值为 `false`。
+    Set to `true` to extend monitoring to the entire subtree of nodes rooted at `target`. All of the other properties are then extended to all of the nodes in the subtree instead of applying solely to the `target` node. The default value is `false`.
 
-  - `childList` 可选
+  - `childList` Optional
 
-      当为 `true` 时，监听 `target` 节点中发生的节点的新增与删除（同时，如果 `subtree` 为 `true`，会针对整个子树生效）。默认值为 `false`。
+    Set to `true` to monitor the target node (and, if `subtree` is `true`, its descendants) for the addition of new child nodes or removal of existing child nodes. The default value is `false`.
 
-  - `attributes` 可选
+  - `attributes` Optional
 
-      当为 `true` 时观察所有监听的节点属性值的变化。默认值为 `true`，当声明了 `attributeFilter` 或 `attributeOldValue`，默认值则为 `false`。
+    Set to `true` to watch for changes to the value of attributes on the node or nodes being monitored. The default value is `true` if either of `attributeFilter` or `attributeOldValue` is specified, otherwise the default value is `false`.
 
-  - `attributeFilter` 可选
+  - `attributeFilter` Optional
 
-      一个用于声明哪些属性名会被监听的数组。如果不声明该属性，所有属性的变化都将触发通知。
+    An array of specific attribute names to be monitored. If this property isn't included, changes to all attributes cause mutation notifications.
 
-  - `attributeOldValue` 可选
+  - `attributeOldValue` Optional
 
-      当为 `true` 时，记录上一次被监听的节点的属性变化；可查阅[监听属性值](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver#监听属性值)了解关于观察属性变化和属性值记录的详情。默认值为 `false`。
+    Set to `true` to record the previous value of any attribute that changes when monitoring the node or nodes for attribute changes; See [Monitoring attribute values](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver#monitoring_attribute_values) for details on watching for attribute changes and value recording. The default value is `false`.
 
-  - `characterData` 可选
+  - `characterData` Optional
 
-      当为 `true` 时，监听声明的 `target` 节点上所有字符的变化。默认值为 `true`，如果声明了 `characterDataOldValue`，默认值则为 `false`
+    Set to `true` to monitor the specified target node (and, if `subtree` is `true`, its descendants) for changes to the character data contained within the node or nodes. The default value is `true` if `characterDataOldValue` is specified, otherwise the default value is `false`.
 
-  - `characterDataOldValue` 可选
+  - `characterDataOldValue` Optional
 
-      当为 `true` 时，记录前一个被监听的节点中发生的文本变化。默认值为 `false`
+    Set to `true` to record the previous value of a node's text whenever the text changes on nodes being monitored. The default value is `false`.
 
-##### 返回值：`Function`，返回注销监视器的函数
+##### returns: `Function` Returns a function to cancel the monitor.
+
+
 
 #### `$watchBox` `Function`
 
-##### 参数
+##### Parameters:
 
-- `callback` ：`Function` 类型，必需，传递两个参数，
+- `callback`: Required. `Function` type. Pass in two parameters,
 
-  - record 是一个 [ResizeObserverEntry](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserverEntry) 数组。其中包含了元素修改后的大小信息。
-  - observer：对 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver/ResizeObserver) 自身的引用。
+  - record is an array of [ResizeObserverEntry](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserverEntry). It contains information about the modified size of elements.
 
-- `options`： `Object` 类型，可选，是 [ResizeObserver.observe()](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver/observe) 的 options 参数，
+  - observer: A reference to ResizeObserver itself.
 
-    `options` 的属性如下：
+- `options`: Optional. `Object` type. It is the options parameter of [ResizeObserver.observe()](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver/observe),The properties of options are as follows:
 
-  - `box` 设置 observer 将监听的盒模型。可能的值是：
+  - `box`  Sets which box model the observer will observe changes to. Possible values are:
 
-    - `content-box`（默认）
+    - `content-box` (the default)
 
-        CSS 中定义的内容区域的大小。
+      Size of the content area as defined in CSS.
 
     - `border-box`
 
-        CSS 中定义的边框区域的大小。
+      Size of the box border area as defined in CSS.
 
     - `device-pixel-content-box`
 
-        在对元素或其祖先应用任何 CSS 转换之前，CSS 中定义的内容区域的大小，以设备像素为单位。
+      The size of the content area as defined in CSS, in device pixels, before applying any CSS transforms on the element or its ancestors.
 
-##### 返回值：`Function`
+##### returns: `Function` 
 
-返回注销监视器的函数，函数有两个方法：
+Returns a function to cancel the monitor.
 
-- pause：`Function` 类型，使当前监视器暂停监视。
+- pause：`Function` type, causes the current monitor to pause monitoring.
 
-- resume：`Function` 类型，使当前监视器恢复监视。应仅在调用 `pause()` 之后再调用。
+- resume：`Function` type, resumes monitoring to the current monitor. Should be called only after `pause()` has been called.

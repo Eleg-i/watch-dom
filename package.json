@@ -5,6 +5,10 @@
   "type": "module",
   "module": "dist/index.esm.browser.min.js",
   "main": "dist/index.cjs.browser.min.js",
+  "entry": [
+    "index.js"
+  ],
+  "outfile": "index",
   "keywords": [
     "watch",
     "DOM",
@@ -36,13 +40,16 @@
     "toc": "doctoc --github --title \"# Changelog\" CHANGELOG.md"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.21.5",
+    "@typescript-eslint/eslint-plugin": "^5.59.7",
+    "@typescript-eslint/parser": "^5.59.7",
     "eslint": "^8.14.0",
     "eslint-config-standard": "^15.0.1",
     "eslint-plugin-html": "^6.2.0",
     "husky": "^8.0.1",
-    "lint-staged": "^13.0.3",
-    "@babel/core": "^7.17.9",
-    "@babel/eslint-parser": "^7.17.0",
-    "@babel/preset-env": "^7.16.11"
+    "lint-staged": "^13.0.3"
   }
 }
