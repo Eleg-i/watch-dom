@@ -1,6 +1,7 @@
 .git
 .gitignore
 .husky
+modules
 script
 node_modules
 test
@@ -11,3 +12,4 @@ debug
 .prettierignore
 .prettierrc.js
 index.js
+lint-staged.config.js
