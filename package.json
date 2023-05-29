@@ -9,6 +9,10 @@
     "index.js"
   ],
   "outfile": "index",
+  "files": [
+    "dist",
+    "types/index.d.ts"
+  ],
   "keywords": [
     "watch",
     "DOM",
