@@ -16,12 +16,12 @@ type resizeObserverOptions = {
 
 export function watch(
   target: Element,
-  callback: (record: MutationRecord, mutation: MutationObserver) => unknown,
+  callback: (records: MutationRecord[], mutation: MutationObserver) => unknown,
   opt: mutationObserverOptions
 ): () => undefined
 export function watchBox(
   target: Element,
-  callback: (record: MutationRecord, mutation: MutationObserver) => unknown,
+  callback: (records: MutationRecord[], mutation: MutationObserver) => unknown,
   opt?: resizeObserverOptions
 ): () => undefined
 
@@ -32,9 +32,9 @@ export default patch
 declare global {
   interface HTMLElement {
     $watch: (
-      callback: (record: MutationRecord, mutation: MutationObserver) => unknown,
+      callback: (records: MutationRecord[], mutation: MutationObserver) => unknown,
       opt: mutationObserverOptions
     ) => () => undefined
-    $watchBox: (callback: (record: MutationRecord) => unknown, opt?: resizeObserverOptions) => () => undefined
+    $watchBox: (callback: (records: MutationRecord) => unknown, opt?: resizeObserverOptions) => () => undefined
   }
 }
