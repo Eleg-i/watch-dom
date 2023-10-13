@@ -9,6 +9,10 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+### v0.1.5
+
+修复 types 未能识别的问题。
+
 ### v0.1.4
 
 修改 Readme 文档，新增两个API，允许直接导入 watch 和 watchBox 方法，新增 types。
