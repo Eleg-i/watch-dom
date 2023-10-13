@@ -41,7 +41,7 @@
     "minor": "npm version minor && npm i --package-lock-only",
     "major": "npm version major && npm i --package-lock-only",
     "publish": "npm publish",
-    "postpublish": "git push origin master --follow-tags",
+    "postpublish": "git push origin main --follow-tags",
     "toc": "doctoc --github --title \"# Changelog\" CHANGELOG.md"
   },
   "devDependencies": {
