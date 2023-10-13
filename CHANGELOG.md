@@ -9,7 +9,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-### v0.1.5
+### v0.1.6
 
 修复 types 未能识别的问题。
 
