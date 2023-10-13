@@ -4,11 +4,14 @@ export function watch(
   callback: (record: MutationRecord, mutation: MutationObserver) => unknown,
   opt: object
 ): () => undefined
-export function $watchBox(
+
+export function watchBox(
   target: Element,
   callback: (record: MutationRecord, mutation: MutationObserver) => unknown,
   opt?: object
 ): () => undefined
+
+export function patch(target?: typeof Element.prototype): void
 
 declare global {
   interface Element {
