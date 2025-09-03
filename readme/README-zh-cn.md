@@ -28,7 +28,7 @@ import { watch, watchBox } from '@cailiao/watch-dom'
 
 #### 使用
 
--  patch 函数
+- patch 函数
 
 ```javascript
 // 监视DOM数上子节点的变化，targetElement 是任意的内置 Element 类的实例，即 DOM 元素
@@ -67,8 +67,6 @@ unwatch.pause()
 // 恢复监视
 unwatch.resume()
 ```
-
-
 
 ## 说明
 
@@ -116,8 +114,6 @@ patch() 方法会在 Element 的原型上插入两个方法，`$watch` 和 `$wat
 
 ##### 返回值：`Function`，返回注销监视器的函数
 
-
-
 #### `$watchBox` `Function`
 
 ##### 参数
@@ -152,8 +148,6 @@ patch() 方法会在 Element 的原型上插入两个方法，`$watch` 和 `$wat
 - pause：`Function` 类型，使当前监视器暂停监视。
 
 - resume：`Function` 类型，使当前监视器恢复监视。应仅在调用 `pause()` 之后再调用。
-
-
 
 #### `watch` `Function`
 
@@ -198,8 +192,6 @@ patch() 方法会在 Element 的原型上插入两个方法，`$watch` 和 `$wat
     当为 `true` 时，记录前一个被监听的节点中发生的文本变化。默认值为 `false`
 
 ##### 返回值：`Function`，返回注销监视器的函数
-
-
 
 #### `watchBox` `Function`
 

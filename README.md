@@ -14,7 +14,7 @@ Install dependencies
 npm i @cailiao/watch-dom
 ```
 
-#### Import 
+#### Import
 
 the patch function
 
@@ -68,15 +68,13 @@ unwatch.pause()
 unwatch.resume()
 ```
 
-
-
 ## Explanation
 
 The `patch()` method inserts two methods, `$watch` and `$watchBox`, on the prototype of `Element`. The directly imported `watch` is equivalent to the `$watch` method on the prototype, and `watchBox` is equivalent to the `$watchBox` method on the prototype, with only slight differences in the parameters passed in.
 
 #### `$watch` `Function`
 
-##### Parameters:
+##### Parameters
 
 - `callback`: Required. `Function` type. Pass in one parameter,
 
@@ -116,15 +114,13 @@ The `patch()` method inserts two methods, `$watch` and `$watchBox`, on the proto
 
     Set to `true` to record the previous value of a node's text whenever the text changes on nodes being monitored. The default value is `false`.
 
-##### returns: `Function` 
+##### returns: `Function`
 
 Returns a function to cancel the monitor.
 
-
-
 #### `$watchBox` `Function`
 
-##### Parameters:
+##### Parameters
 
 - `callback`: Required. `Function` type. Pass in two parameters,
 
@@ -148,7 +144,7 @@ Returns a function to cancel the monitor.
 
       The size of the content area as defined in CSS, in device pixels, before applying any CSS transforms on the element or its ancestors.
 
-##### returns: `Function` 
+##### returns: `Function`
 
 Returns a function to cancel the monitor.
 
@@ -156,11 +152,9 @@ Returns a function to cancel the monitor.
 
 - resume：`Function` type, resumes monitoring to the current monitor. Should be called only after `pause()` has been called.
 
-
-
 #### `watch` `Function`
 
-##### Parameters:
+##### Parameters
 
 - `target`：Required. `HTMLAllCollection` type.
 
@@ -173,7 +167,6 @@ Returns a function to cancel the monitor.
 - `options`: Required. `Object` type. It is the options parameter of [MutationObserver.observe()](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/observe),
 
   - Options are as follows:
-
 
   - `subtree` Optional
 
@@ -207,11 +200,9 @@ Returns a function to cancel the monitor.
 
 Returns a function to cancel the monitor.
 
-
-
 #### `watchBox` `Function`
 
-##### Parameters:
+##### Parameters
 
 - `target`：Required. `HTMLAllCollection` type.
 
@@ -237,7 +228,7 @@ Returns a function to cancel the monitor.
 
       The size of the content area as defined in CSS, in device pixels, before applying any CSS transforms on the element or its ancestors.
 
-##### returns: `Function` 
+##### returns: `Function`
 
 Returns a function to cancel the monitor.
 
