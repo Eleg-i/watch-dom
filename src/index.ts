@@ -26,5 +26,5 @@ export function patch(target: Element = HTMLElement.prototype) {
   })
 }
 
-// export default patch
+export default patch
 export { watch, watchBox }

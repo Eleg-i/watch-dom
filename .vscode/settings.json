@@ -42,5 +42,6 @@
     "*.js": "$(capture).js.gz, $(capture).js.map",
     "*.css": "$(capture).css.gz, $(capture).css.map"
   },
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "git.enableCommitSigning": false
 }
