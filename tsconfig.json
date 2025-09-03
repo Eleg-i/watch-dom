@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    // "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "ignoreDeprecations": "5.0",
+    "incremental": true,
+    "declaration": true,
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    // "noEmit": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "paths": {},
+    "sourceMap": true,
+    "strict": true,
+    "target": "ESNext",
+    "types": [
+      "./src/types"
+    ]
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.d.ts"
+    // unplugin-auto-import/vite自动引入的类型声明文件
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.js",
+    "**/*.mjs",
+    "**/*.cjs",
+    "vite.*.ts"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}

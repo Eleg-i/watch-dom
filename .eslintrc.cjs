@@ -1,4 +1,4 @@
-const production = process.env.NODE_ENV === 'production'
+const overrides = require('./.eslint-overrides.cjs')
 
 module.exports = {
   env: {
@@ -10,55 +10,39 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    // 'plugin:vue/recommended',
-    'plugin:@typescript-eslint/recommended'
+    'plugin:vue/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:jsdoc/recommended-typescript'
     // "plugin:import/recommended",
     // "plugin:node/recommended",
     // 'plugin:promise/recommended'
   ],
-  globals: {
-    $: 'readonly',
-    $bpm: 'readonly',
-    $wsPool: 'readonly',
-    _: 'readonly',
-    __mainAppProps__: 'readonly',
-    // eslint-disable-next-line camelcase
-    __webpack_public_path__: 'writable',
-    axios: 'readonly',
-    Base64: 'readonly',
-    ClipboardJS: 'readonly',
-    DEV: 'readonly',
-    Enum: 'readonly',
-    jQuery: 'readonly',
-    Vue: 'readonly',
-    VueRouter: 'readonly'
-  },
-  overrides: [
-    {
-      files: ['*.ts', '*.tsx'],
-      rules: {
-        // The core 'no-unused-vars' rules (in the eslint:recommeded ruleset)
-        // does not work with type definitions
-        'no-unused-vars': 'off'
-      }
-    }
-  ],
-  parser: '@typescript-eslint/parser',
+  overrides,
+  parser: 'vue-eslint-parser',
   parserOptions: {
     ecmaFeatures: { impliedStrict: true },
-    // vueFeatures: {
-    //   interpolationAsNonHTML: true,
-    //   styleCSSVariableInjection: true
+    vueFeatures: {
+      interpolationAsNonHTML: true,
+      styleCSSVariableInjection: true
+    },
+    ecmaVersion: 2023,
+    parser: '@typescript-eslint/parser',
+    // babelOptions: {
+    //   configFile: './config/babel.config.js'
     // },
-    ecmaVersion: 2022,
-    // parser: '@babel/eslint-parser',
     sourceType: 'module'
   },
-  plugins: ['html', 'vue', 'jsx', '@cailiao/prettier', '@typescript-eslint'],
+  plugins: [
+    'vue',
+    'jsx',
+    '@typescript-eslint',
+    'jsdoc',
+    'import'
+    // '@cailiao/prettier'
+  ],
   root: true,
   // 默认可用的全局变量
   rules: {
-    '@cailiao/prettier/prettier': 0,
     'accessor-pairs': 0, //在对象中使用getter/setter
     //数组中括号（不含成员之间的换行）需要换行
     'array-bracket-newline': [
@@ -82,8 +66,16 @@ module.exports = {
     'block-scoped-var': 0, //块语句中使用var
     'brace-style': [1, '1tbs'], //大括号风格
     'callback-return': 0, //回调后需要有return语句，避免多次调用回调
-    // 要求驼峰法命名
-    camelcase: 1,
+    camelcase: [
+      // 要求小驼峰法命名函数变量
+      1,
+      {
+        properties: 'always',
+        ignoreDestructuring: false,
+        ignoreImports: false,
+        ignoreGlobals: false
+      }
+    ],
     'comma-dangle': [2, 'never'], //对象字面量项尾不能有逗号
     'comma-spacing': 0, //逗号前后的空格
     'comma-style': [2, 'last'], //逗号风格，换行时在行首还是行尾
@@ -155,28 +147,41 @@ module.exports = {
     'keywrod-space': 0, // return throw case后面要不要加空格
     'linebreak-style': [0, 'windows'], //换行风格
     'lines-around-comment': 0, //行前/行后备注
+    'lines-between-class-members': 1, // 类成员之间存在空行
     'max-depth': [1, 5], //嵌套块深度
     'max-len': [1, { code: 140 }], //字符串最大长度
     'max-nested-callbacks': [0, 2], //回调嵌套深度
     'max-params': [2, 3], //函数最多只能有3个参数
     'max-statements': [0, 10], // 函数内最多有几个声明
-    'new-cap': 2, // 要求构造函数的首字母必须大写
+    'new-cap': [
+      'error',
+      {
+        newIsCap: true, // 要求构造函数的首字母必须大写
+        capIsNew: false // 允许 new 后使用小驼峰命名
+      }
+    ],
     'new-parens': 2, // new时必须加小括号
     'newline-per-chained-call': 2, // 要求链式调用必须换行，ignoreChainWithDepth表示无需换行的最大调用深度，默认为2.
     'no-alert': 1, // 禁止使用alert confirm prompt
     'no-array-constructor': 0, // 禁止使用数组构造器
+    'no-async-promise-executor': 0, // 禁止使用异步函数作为 Promise executor
     'no-bitwise': 0, //禁止使用按位运算符
     'no-caller': 0, //禁止使用arguments.caller或arguments.callee
     'no-case-declarations': 2, // 不允许在case中声明
     'no-catch-shadow': 2, //禁止catch子句参数与外部作用域变量同名
     'no-class-assign': 2, //禁止给类赋值
     'no-cond-assign': 2, //禁止在条件表达式中使用赋值语句
-    'no-console': [production ? 2 : 1, { allow: ['warn', 'error', 'info'] }], //不能使用console
+    'no-console': [
+      1,
+      {
+        allow: ['warn', 'error', 'info', 'debug', 'group', 'groupCollapsed', 'groupEnd', 'separate']
+      }
+    ], //不能使用console
     'no-const-assign': 2, //禁止修改const声明的变量
     'no-constant-condition': 1, //禁止在条件中使用常量表达式 if(true) if(1
     'no-continue': 0, //禁止使用continue
-    'no-control-regex': 2, //禁止在正则表达式中使用控制字符
-    'no-debugger': production ? 2 : 1, //禁止使用debugger
+    'no-control-regex': 0, //禁止在正则表达式中使用控制字符
+    'no-debugger': 1, //禁止使用debugger
     'no-delete-var': 1, //不能对var声明的变量使用delete操作符
     'no-div-regex': 1, //不能使用看起来像除法的正则表达式/=foo/
     'no-dupe-args': 2, //函数参数不能重复
@@ -223,8 +228,8 @@ module.exports = {
     'no-new-object': 0, //禁止使用new Object()
     'no-new-require': 1, //禁止使用new require
     'no-new-wrappers': 0, //禁止使用new创建包装实例，new String new Boolean new Number
-    'no-obj-calls': 0, //不能调用内置的全局对象，比如Math() JSON()
-    'no-octal': 0, //禁止使用八进制数字)
+    'no-obj-calls': 2, //不能调用内置的全局对象，比如Math() JSON()
+    'no-octal': 0, //禁止使用八进制数字
     'no-octal-escape': 0, //禁止使用八进制转义序列
     'no-param-reassign': 2, //禁止给参数重新赋值
     'no-path-concat': 0, //node中不能使用__dirname或__filename做路径拼接
@@ -236,6 +241,15 @@ module.exports = {
     'no-redeclare': 2, //禁止重复声明变量
     'no-regex-spaces': 2, //禁止在正则表达式字面量中使用多个空格 /foo bar/
     'no-restricted-modules': 2, //如果禁用了指定模块，使用就会报错
+    'no-restricted-syntax': [
+      // 禁止使用指定语法
+      0,
+      {
+        selector: 'VariableDeclarator > ArrowFunctionExpression', // 禁止直接声明箭头函数，使用 function 声明替代
+        message:
+          'Direct assignment of arrow functions to variables is not allowe, use declare function instead.'
+      }
+    ],
     'no-return-assign': 2, //return 语句中不能有赋值表达式
     'no-script-url': 0, //禁止使用javascript:void(0)
     'no-self-assign': 2, // 禁止自我赋值
@@ -251,17 +265,17 @@ module.exports = {
     'no-throw-literal': 2, //禁止抛出字面量错误 throw "error";
     'no-trailing-spaces': 1, // 一行结束后面不要有空格
     // 最大空行1
-    'no-undef': 2, //未定义变量不能使用
-    'no-undef-init': 2, //变量初始化时不能直接给它赋值为undefined
-    'no-undefined': 0, //不能使用undefined
-    'no-underscore-dangle': 0, //标识符不能以_开头或结尾
+    'no-undef': 0, //未定义变量不能使用
+    'no-undef-init': 2, // 变量初始化时不能直接给它赋值为undefined
+    'no-undefined': 2, // 不能使用 undefined
+    'no-underscore-dangle': 0, // 标识符不能以_开头或结尾
     'no-unexpected-multiline': 1, //避免多行表达式
     'no-unneeded-ternary': 2, //禁止不必要的嵌套 var isYes = answer === 1 ? true : false;
     'no-unreachable': 2, //不能有无法执行的代码
     'no-unused-expressions': 0, //禁止无用的表达式
     // 参数不检查 不允许声明未使用变量
     'no-unused-vars': [
-      1,
+      0,
       {
         vars: 'local',
         args: 'after-used'
@@ -278,8 +292,8 @@ module.exports = {
     'no-useless-call': 2, //禁止不必要的call和apply
     'no-useless-catch': 2, // 禁止无用的try catch，如直接将错误抛出
     'no-useless-escape': 0,
-    'no-var': 0, //禁用var，用let和const代替
-    'no-void': 0, //禁用void操作符
+    'no-var': 0, // 禁用var，用let和const代替
+    'no-void': 0, // 禁用void操作符
     'no-warning-comments': [
       1,
       {
@@ -317,7 +331,7 @@ module.exports = {
     ],
     'object-curly-spacing': [0, 'never'], //大括号内是否允许不必要的空格
     'object-shorthand': 2, //强制对象字面量缩写语法
-    'one-var': [2, { var: 'always', let: 'always', const: 'consecutive' }], //强制集体声明
+    'one-var': [2, { var: 'always', let: 'always', const: 'never' }], //强制集体声明
     'operator-assignment': [2, 'always'], //强制使用或禁用赋值运算符缩写 += -=
     'operator-linebreak': [2, 'after', { overrides: { '?': 'before', ':': 'before' } }], //换行时运算符在行尾还是行首
     'padded-blocks': [2, 'never'], //块语句内行首行尾是否要空行
@@ -345,21 +359,9 @@ module.exports = {
     'prefer-object-spread': 2, // 禁止对空对象使用Object.assign，应该使用解构赋值
     'prefer-reflect': 0, //首选Reflect的方法
     'prefer-spread': 2, //需要展开操作符而不是.apply()
-    'quote-props': [0, 'always'], //对象字面量中的属性名是否强制双引号
+    'quote-props': [1, 'as-needed'], //对象字面量中的属性名是否强制双引号
     quotes: [2, 'single'], // 强制单引号
     radix: 0, //parseInt必须指定第二个参数
-    'require-jsdoc': [
-      1, // 强制要求书写注释
-      {
-        require: {
-          FunctionDeclaration: true, // 函数声明
-          MethodDefinition: true, // 类（内部）方法定义
-          ClassDeclaration: true, // 类声明
-          ArrowFunctionExpression: false, // 箭头函数表达式
-          FunctionExpression: false // 函数表达式
-        }
-      }
-    ],
     'require-yield': 2, //生成器函数必须有yield
     semi: [2, 'never'], // 要求示分号结尾，never表示从不以分号结尾，除语法消除歧义外。
     'semi-spacing': [
@@ -370,7 +372,14 @@ module.exports = {
         after: true
       }
     ],
-    'sort-imports': 1, // 导入声明排序
+    'sort-imports': [
+      // 导入声明排序
+      0,
+      {
+        ignoreCase: false,
+        allowSeparatedGroups: true
+      }
+    ], // 导入声明排序
     'sort-vars': 0, // 变量声明时排序
     'space-before-blocks': [2, 'always'], // 不以新行开始的块 { 前面要不要有空格
     'space-before-function-paren': [
@@ -394,91 +403,105 @@ module.exports = {
     strict: 2, // 使用严格模式
     'template-curly-spacing': 1, // 要求模版字符串大括号内侧需要空格
     'use-isnan': 2, // 禁止比较时使用NaN，只能用isNaN()
-    'valid-jsdoc': [
-      2, // jsdoc 规则校验
-      {
-        prefer: {
-          arg: 'param',
-          argument: 'param',
-          constructor: 'class',
-          returns: 'return',
-          virtual: 'abstract',
-          method: 'func',
-          function: 'func'
-        },
-        preferType: {
-          boolean: 'Boolean',
-          number: 'Number',
-          object: 'Object',
-          string: 'String',
-          array: 'Array'
-        },
-        requireReturn: false,
-        requireReturnType: false,
-        matchDescription: '.+',
-        requireParamDescription: false,
-        requireReturnDescription: false
-      }
-    ],
     'valid-typeof': 2, // 必须使用合法的typeof的值
     'vars-on-top': 2, // var必须放在作用域顶部
     'wrap-iife': [2, 'inside'], // 要求立即执行函数表达式的小括号风格为外部括号(去掉"inside"默认为内部括号)
     'wrap-regex': 0,
     yoda: [2, 'never'], // 禁止尤达条件, // 正则表达式字面量用小括号包起来
     // eslint-disable-next-line vue/sort-keys
-    'vue/attribute-hyphenation': [0, 'never'], // 强制要求模版中的绑定属性名称为连字符分隔或者从不使用连字符
-    'vue/camelcase': 2, // template 和 script 中要求使用 camelcase
-    'vue/comment-directive': 0,
-    'vue/component-name-in-template-casing': [2, 'PascalCase'],
-    'vue/component-options-name-casing': [2, 'PascalCase'],
-    'vue/eqeqeq': 2, // 要求在 template 中使用全等于
-    'vue/experimental-script-setup-vars': 0, //防止在 < script setup > 中定义的变量被标记为未定义
-    'vue/html-closing-bracket-newline': 1, //要求html标签结束符前面需要有换行符
-    'vue/html-indent': [
-      //限制html换行的缩进量
+    '@typescript-eslint/no-duplicate-enum-values': 0, // 禁止枚举值重复
+    '@typescript-eslint/no-explicit-any': 0, // 禁止使用 any 类型
+    '@typescript-eslint/no-this-alias': 0, // 禁止 this 别名
+    '@typescript-eslint/no-unused-vars': [0, { varsIgnorePattern: '^_' }], // 禁止未使用的变量
+    // eslint-disable-next-line vue/sort-keys
+    'import/order': [
       1,
-      2,
       {
-        attribute: 1, //属性缩进的倍数
-        baseIndent: 1, //顶级标签的缩进倍数
-        closeBracket: 0, //小括号缩进的倍数
-        alignAttributesVertically: false, //属性是否应该垂直对齐到多行大小写中的第一个属性的条件。
-        ignores: [] //需要忽略的节点
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+        'newlines-between': 'never',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true
+        }
       }
     ],
-    'vue/html-self-closing': [
+    'jsdoc/check-line-alignment': [
+      // 检查注释对齐
       1,
+      'always',
       {
-        //要求html标签有反斜杠闭合
-        html: {
-          void: 'always', //html空标签必须要求反斜杠，always始终要求，never始终不要求，any任意
-          normal: 'always',
-          component: 'always'
+        tags: ['param', 'arg', 'argument', 'property', 'prop'],
+        customSpacings: {
+          postDelimiter: 1,
+          postTag: 1,
+          postType: 1
         },
-        svg: 'always',
-        math: 'always'
+        // eslint-disable-next-line id-length
+        preserveMainDescriptionPostDelimiter: true
       }
     ],
-    'vue/max-attributes-per-line': [
-      // vue模版中每行html属性最大值
-      1,
+    'jsdoc/no-blank-blocks': 1, // 禁止空块注释
+    'jsdoc/require-asterisk-prefix': 1, // 要求所有的注释都要有星号
+    'jsdoc/require-description': 1, // 要求所有的函数或类等都要有描述
+    'jsdoc/require-jsdoc': [
+      1, // 强制要求函数书写注释
       {
-        singleline: 8, // 单行模式下最大为4个属性
-        // 多行模式下最大为1个属性
-        multiline: { max: 1 }
+        require: {
+          FunctionDeclaration: true, // 函数声明
+          MethodDefinition: true, // 类（内部）方法定义
+          ClassDeclaration: true, // 类声明
+          ArrowFunctionExpression: false, // 箭头函数表达式
+          FunctionExpression: false // 函数表达式
+        },
+        contexts: [
+          'FunctionDeclaration',
+          'MethodDefinition',
+          'ClassDeclaration',
+          /**
+           * 按顺序排
+           * 排除参数中的回调函数
+           * 排除对象参数中的方法
+           * 排除构造函数参数中的回调函数
+           * 排除构造函数对象参数中的方法
+           * 排除 Object.defineProperty 和 Object.defineProperties 中的方法
+           */
+          /**
+           * 按顺序排
+           * 排除参数中的回调函数
+           * 排除对象参数中的方法
+           * 排除构造函数参数中的回调函数
+           * 排除构造函数对象参数中的方法
+           * 排除 Object.defineProperty 和 Object.defineProperties 中的方法
+           */
+          ...['ArrowFunctionExpression', 'FunctionExpression'].map(item =>
+            `${item}:not(:matches(
+              [parent.type='CallExpression'],
+              [parent.parent.parent.type='CallExpression'][parent.parent.type='ObjectExpression'],
+              [parent.parent.type='CallExpression'][parent.type='ArrayExpression'],
+              [parent.type='NewExpression'],
+              [parent.parent.parent.type='NewExpression'][parent.parent.type='ObjectExpression'],
+              [parent.parent.parent.parent.parent.callee.property.name='defineProperties'],
+              [parent.parent.parent.parent.callee.property.name='defineProperty'],
+              [parent.parent.type='ObjectExpression'][parent.kind='get'],
+              [parent.parent.type='ObjectExpression'][parent.kind='set'],
+              [parent.parent.type='ObjectExpression'][parent.parent.parent.key.name='getters']
+              [parent.parent.parent.parent.parent.callee.name='defineStore'],
+              [parent.parent.type='ObjectExpression'][parent.parent.parent.parent.parent.callee.name='defineProps'],
+              [parent.parent.parent.type='ArrayExpression'][parent.parent.type='ObjectExpression'][parent.key.name='props'],
+              [parent.parent.parent.type='ArrayExpression'][parent.parent.type='ObjectExpression'][parent.key.name='component'],
+              [parent.parent.parent.parent.type='ObjectExpression'][parent.parent.parent.key.name='persist']
+              [parent.key.name='afterRestore'],
+              [parent.parent.parent.parent.value.type='ArrayExpression'][parent.parent.parent.parent.key.name='persist']
+              [parent.key.name='afterRestore'],
+              [parent.parent.parent.parent.type='ObjectExpression'][parent.parent.parent.key.name='persist']
+              [parent.key.name='beforeRestore'],
+              [parent.parent.parent.parent.key.type='ArrayExpression'][parent.parent.parent.parent.key.name='persist']
+              [parent.key.name='beforeRestore']
+            ))`.replace(/\s+/g, '')
+          )
+        ]
       }
     ],
-    'vue/multi-word-component-names': 0,
-    'vue/no-mutating-props': 2, // 不允许在子组件修改父组件通过props传递的参数
-    'vue/no-reserved-keys': [
-      2 // 限制vue中不允许的变量覆盖（声明）
-      // { "reserved": [], "groups": [] }
-    ],
-    'vue/no-use-v-if-with-v-for': 2, // 不允许同时使用v-if和v-for
-    'vue/no-v-html': 0, // 禁止使用 v-html
-    'vue/one-component-per-file': 0, // 强制限制仅在单独的vue模版文件中声明组件，不允许使用js创建组件。
-    'vue/require-default-prop': [1], // 要求prop中的参数必须有默认值
-    'vue/singleline-html-element-content-newline': 0, //要求块级元素如果有内容必须换行展开
     'vue/sort-keys': [
       // 强制要求vue选项中的键排序
       1,
