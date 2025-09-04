@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    // "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "ignoreDeprecations": "5.0",
     "incremental": true,
@@ -13,12 +12,10 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "importHelpers": true,
-    // "noEmit": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "paths": {},
     "sourceMap": true,
     "strict": true,
     "target": "ESNext",
@@ -29,7 +26,6 @@
   "include": [
     "./**/*.ts",
     "./**/*.d.ts"
-    // unplugin-auto-import/vite自动引入的类型声明文件
   ],
   "exclude": [
     "node_modules",
